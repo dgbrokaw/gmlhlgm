@@ -100,14 +100,20 @@ jsPsych.plugins["gmlhlgm"] = (function() {
   plugin.trial = function(display_element, trial) {
     const trial_data = {};
 
+    d3.select('#jspsych-content').style('margin', 0);
+
     const d3_display_element = d3.select(display_element);
 
     const container = d3_display_element.append('div')
-      .attr('id', 'gesture-trial-container');
+      .attr('id', 'gesture-trial-container')
+      .style({
+        'height': '100vh',
+        'width': '100vw'
+      });
 
-    const div = container.append('div');
+    // const div = container.append('div');
 
-    const gm_container = div.append('div')
+    const gm_container = container.append('div')
       .classed('gm-container', true)
       .style('position', 'relative');
 
@@ -116,7 +122,7 @@ jsPsych.plugins["gmlhlgm"] = (function() {
     // FIXME: For some reason the svg within the canvas (deprecated, for the most part) has an altered position within the canvases on this page.
     // This is producing a horizontal scroll bar.  Removing SVGs here to prevent that.
     // div.select('.gm-canvas').selectAll('svg').remove();
-    div.select('.gm-canvas').append('div')
+    container.select('.gm-canvas').append('div')
       .style({ 
         'position': 'absolute',
         'width': '100%',
@@ -156,6 +162,7 @@ jsPsych.plugins["gmlhlgm"] = (function() {
         // console.log('3', trial_data);
         // end trial
         setTimeout(function() {
+            d3.select('#jspsych-content').style('margin', 'auto');
             jsPsych.finishTrial(trial_data);
         }, 3000);
       }
